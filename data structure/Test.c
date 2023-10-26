@@ -1,43 +1,28 @@
-<<<<<<< HEAD
 #include "SeqList.h"
+
+void TestSeqList1()
+{
+    SL sl;
+    ElemType a=1;
+    ElemType *e=&a;
+    InitList(&sl);
+    ListEmpty(&sl);
+    SeqListPushBack(&sl, 1);
+    SeqListPushBack(&sl, 2);
+    SeqListPushBack(&sl, 3);
+    ListLength(&sl);
+    SeqListPushBack(&sl, 4);
+    SeqListPushBack(&sl, 5);
+    ListLength(&sl);
+    GetElem(&sl, 3, e);
+    printf("%d\n", *e);
+    ListEmpty(&sl);
+    DispList(&sl);
+    Destory(&sl);
+}
 
 int main()
 {
-    int c,d;
-    scanf("%d %d",&c,&d);
-    swap(&c, &d);
-    printf("%d,%d",c,d);
+    TestSeqList1();
     return 0;
 }
-
-
-
-/* int main()
-{
-    SL L;
-    L.length=1;
-    printf("%d", int(ListEmpty(&L)));
-    return 0;
-} */
-=======
-#include "SeqList.h"
-
-int main()
-{
-    int c,d;
-    scanf("%d %d",&c,&d);
-    swap(&c, &d);
-    printf("%d,%d",c,d);
-    return 0;
-}
-
-
-
-/* int main()
-{
-    SL L;
-    L.length=1;
-    printf("%d", int(ListEmpty(&L)));
-    return 0;
-} */
->>>>>>> 51b3f90d4cf16019ba266f4926c2a1924c9e0729

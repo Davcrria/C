@@ -1,103 +1,107 @@
-<<<<<<< HEAD
-#include <stdio.h>
-#include <stdlib.h>
-#define N 50
+#include<stdio.h>
+#include<stdlib.h>
+
+typedef int ElemType;//方便修改类型
 
 
-/* void swap(int *a,int *b)
+//动态顺序表
+typedef struct SeqList//简写SeqList
 {
-    int t;
-    t=*a;
-    *a=*b;
-    *b=t;
-} */
-
-typedef int SLDataType;
-
-typedef struct 
-{
-    SLDataType* ps;
-    int length;
+    ElemType* a;
+    int size;       //表示数组中储存了多少数据
+    int capacity;   //表示数组实际能储存的空间有多大
 }SL;
 
-
-
-/*void InitList(SL * & L);
-
-void DestroyList(SL * & L);
-
-bool ListEmpty(SL * L);
-
-int ListLength(SL * L);
-
-void DispList(SL * L);
-
-bool GetElem(SL * L, int i, SLDataType &e);
-
-int LocateElem(SL * L, SLDataType e);
-
-bool ListInsert(SL * & L, int i, SLDataType e);*/
-
-
-/*void CreatList(SL *&L, SLDataType a[], int n)
+//顺序表的初始化，构造一个新的顺序表
+void InitList(SL* p)
 {
-    int i=0,k=0;
-    L=(SL *)malloc(sizeof(SL));
-    while (i<n)
+    p->a = NULL;
+    p->capacity = p->size = 0;
+}
+
+//销毁顺序表
+void Destory(SL* p)
+{
+    free(p->a);
+    p->capacity = p->size = 0;
+}
+
+//判断线性表是否为空表
+void ListEmpty(SL* p)
+{
+    if(p->size == 0)
     {
-        L->data[k]=a[i];
-        k++;
+        printf("线性表为空表\n");
+    }
+    else
+    {
+        printf("线性表不为空表\n");
+    }
+}
+
+//返回线性表的长度
+void ListLength(SL* p)
+{
+    printf("线性表的长度为：%d\n", p->size);
+}
+
+//检查顺序表空间（capacity）容量，判断是否需要扩容
+void SeqListCheckCapacity(SL* p)
+{
+    if(p->size == p->capacity)
+    {
+        //空间不足则扩容
+        int newcapacity = p->capacity == 0 ? 4 : p->capacity*2;
+        ElemType* tmp = (ElemType* )realloc(p->a, newcapacity*sizeof(ElemType));
+        if (tmp == NULL)
+        {
+            printf("relloc fail\n");
+            exit(-1);
+        }
+        p->capacity = newcapacity;
+        p->a = tmp;
+    }    
+}
+
+//顺序表的尾插
+void SeqListPushBack(SL* p, ElemType x)
+{
+    SeqListCheckCapacity(p);//插入时先判断容量够不够再进行插入操作
+    p->a[p->size] = x;
+    p->size++;
+}
+
+//顺序表的打印
+void DispList(SL* p)
+{
+    for(int i = 0;i < p->size;i++)
+    {
+        printf("%d ", p->a[i]);
+    }
+}
+
+//求线性表指定位置的某个数据元素，用e返回其值
+void GetElem(SL* p, int i, ElemType* x)
+{
+    if(i < 0 || i > p->size)
+    {
+        printf("error\n");
+    }
+    else
+    {
+        *x = p->a[i-1];
+    }
+}
+
+//查找某一元素，找到了则返回x位置的下标
+int LocateElem(SL* p, ElemType x)
+{
+    int i = 0;
+    while(i < p->size && p->a[i] != x)
+    {
         i++;
     }
-    L->length=k;
-}*/
-
-/*void InitList(SL * & L)
-{
-    L=(SL *)malloc(sizeof(SL));
-    L->length=0;
-}
-
-void DestroyList(SL *&L)
-{
-    free(L);
-}*/
-
-/* bool ListEmpty(SL *L)
-{
-    return(L->length==0);
-} */
-
-/*int ListLength(SL *L)
-{
-    return(L->length);
-}
-
-void DispList(SL *L)
-{
-    for(int i=0;i->length;i++)
-    {
-        printf("%d",L->data[i]);
-    }
-    printf("\n");
-}
-
-bool GetElem(SL *L, int i, SLDataType &e)
-{
-    if(i<1 || i>L->length)
-    return false;
-    e=L->data[i-1];
-    return true;
-}
-
-int LocateElem(SL *L, SLDataType e)
-{
-    int i=0;
-    while (i<L->length && L->data[i]!=e)
-    {
-        i++;
-    }
-    if(i>=L->length)
+    if(i >= p->size)
     {
         return 0;
     }
@@ -107,125 +111,60 @@ int LocateElem(SL *L, SLDataType e)
     }
 }
 
-bool ListInsert(SL *&L, int i, SLDataType e)
+//在指定pos下标位置插入数据
+void ListInsert(SL* p, int pos, ElemType x)
 {
-    int j;
-    return false;
-}*/
+    SeqListCheckCapacity(p);//插入时先判断容量够不够再进行插入操作
+    int end = p->size;
+    for(int i = 0;i < p->size-pos;i++)
+    {
+        p->a[end] = p->a[end-1];
+        --end;
+    }
+    p->a[pos] = x;
+}
 
-=======
-#include <stdio.h>
-#include <stdlib.h>
-#define N 50
-
-
-/* void swap(int *a,int *b)
+//顺序表头插数据
+void SeqListPushFront(SL* p, ElemType x)
 {
-    int t;
-    t=*a;
-    *a=*b;
-    *b=t;
+    SeqListCheckCapacity(p);//插入时先判断容量够不够再进行插入操作
+    //挪动数据
+    int end = p->size - 1;
+    while (end >= 0)
+    {
+        p->a[end+1] = p->a[end];
+        --end;
+    }
+    p->a[0] = x;
+    p->size++;
+}
+
+//头删数据表中的数据
+/* void SeqListPopFront(SL* p)
+{
+    assert(p->size > 0);//判断size的值是否大于零，防止size小于0，出现错误
+    //挪动数据
+    int begin = 1;
+    while (begin <= p->size-1)
+    {
+        p->a[begin - 1] = p->a[begin];
+        ++begin;
+    }
+    p->size--;
 } */
 
-typedef int SLDataType;
 
-typedef struct 
+
+
+
+//在指定pos下标位置删除数据
+void ListDelete(SL* p, int pos)
 {
-    SLDataType* ps;
-    int length;
-}SL;
-
-
-
-/*void InitList(SL * & L);
-
-void DestroyList(SL * & L);
-
-bool ListEmpty(SL * L);
-
-int ListLength(SL * L);
-
-void DispList(SL * L);
-
-bool GetElem(SL * L, int i, SLDataType &e);
-
-int LocateElem(SL * L, SLDataType e);
-
-bool ListInsert(SL * & L, int i, SLDataType e);*/
-
-
-/*void CreatList(SL *&L, SLDataType a[], int n)
-{
-    int i=0,k=0;
-    L=(SL *)malloc(sizeof(SL));
-    while (i<n)
+    int begin = pos + 1;
+    for(int i = 0;i <= p->size;i++)
     {
-        L->data[k]=a[i];
-        k++;
-        i++;
+        p->a[begin-1] = p->a[begin];
+        ++begin;
     }
-    L->length=k;
-}*/
-
-/*void InitList(SL * & L)
-{
-    L=(SL *)malloc(sizeof(SL));
-    L->length=0;
+    p->size--;
 }
-
-void DestroyList(SL *&L)
-{
-    free(L);
-}*/
-
-/* bool ListEmpty(SL *L)
-{
-    return(L->length==0);
-} */
-
-/*int ListLength(SL *L)
-{
-    return(L->length);
-}
-
-void DispList(SL *L)
-{
-    for(int i=0;i->length;i++)
-    {
-        printf("%d",L->data[i]);
-    }
-    printf("\n");
-}
-
-bool GetElem(SL *L, int i, SLDataType &e)
-{
-    if(i<1 || i>L->length)
-    return false;
-    e=L->data[i-1];
-    return true;
-}
-
-int LocateElem(SL *L, SLDataType e)
-{
-    int i=0;
-    while (i<L->length && L->data[i]!=e)
-    {
-        i++;
-    }
-    if(i>=L->length)
-    {
-        return 0;
-    }
-    else
-    {
-        return i+1;
-    }
-}
-
-bool ListInsert(SL *&L, int i, SLDataType e)
-{
-    int j;
-    return false;
-}*/
-
->>>>>>> 51b3f90d4cf16019ba266f4926c2a1924c9e0729
