@@ -3,22 +3,17 @@
 void TestSeqList1()
 {
     SL sl;
-    ElemType a=1;
-    ElemType *e=&a;
+    ElemType e;
     InitList(&sl);
-    ListEmpty(&sl);
-    SeqListPushBack(&sl, 1);
-    SeqListPushBack(&sl, 2);
-    SeqListPushBack(&sl, 3);
-    ListLength(&sl);
-    SeqListPushBack(&sl, 4);
-    SeqListPushBack(&sl, 5);
-    ListLength(&sl);
-    GetElem(&sl, 3, e);
-    printf("%d\n", *e);
-    ListEmpty(&sl);
+    ListInsert(&sl, 1, 1);
+    ListInsert(&sl, 2, 2);
+    ListInsert(&sl, 3, 4);
+    ListInsert(&sl, 4, 8);
+    ListInsert(&sl, 5, 5);
     DispList(&sl);
-    Destory(&sl);
+    printf("\n");
+    DeleteElem(&sl, 2, 3);
+    DispList(&sl);
 }
 
 int main()
